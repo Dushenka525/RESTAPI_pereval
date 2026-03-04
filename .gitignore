@@ -1,0 +1,65 @@
+# Виртуальное окружение
+venv/
+env/
+ENV/
+.venv/
+
+# Файлы базы данных
+*.sqlite3
+*.db
+
+# Кэш Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Миграции (обычно их коммитят, но можно добавить при необходимости)
+# */migrations/*.py
+# !*/migrations/__init__.py
+
+# Медиа и статические файлы (загруженные пользователями)
+/media/
+/staticfiles/
+/static/
+
+# Файлы с секретами и переменными окружения
+.env
+.env.local
+.env.production
+.env.development
+
+# Логи
+*.log
+
+# Файлы IDE (Visual Studio, VS Code, PyCharm)
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Файлы проекта Django (дополнительно)
+*.pot
+*.pyc
+local_settings.py
+db.sqlite3
+media/
+
+# Файлы тестового покрытия
+.coverage
+htmlcov/
+.tox/
+
+# Файлы сборки и зависимостей (если есть)
+node_modules/
+package-lock.json
+
+# Файлы, создаваемые при запуске сервера
+*.pid
+*.pid.lock
+
+# Временные файлы
+*.bak
+*.tmp
