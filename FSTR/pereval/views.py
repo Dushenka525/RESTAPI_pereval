@@ -26,24 +26,6 @@ class ImageUploadView(APIView):
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# @api_view([ 'POST'])
-# def submit_data(request):
-#     serializer = PerevalAddedSerializer(data=request.data)
-#     if serializer.is_valid():
-#         pereval = serializer.save()
-#         return Response({
-#             'status': 200,
-#             'message': 'Отправлено успешно',
-#             'id': pereval.id
-#         })
-#     print(serializer.errors)  # добавить эту строку
-
-#     return Response({
-#         'status': 400,
-#         'message': 'Ошибка валидации',
-#         'errors': serializer.errors
-#     }, status=400)
-
 
 @api_view(['GET', 'POST'])
 def submit_data(request):
