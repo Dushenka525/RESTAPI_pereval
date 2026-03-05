@@ -85,3 +85,57 @@ class PerevalAddedSerializer(serializers.ModelSerializer):
         for img in images_ids:
             PerevalImage.objects.create(pereval=pereval, image=img)
         return pereval
+    
+
+class PerevalAddedDetailSerializer(serializers.ModelSerializer):
+    """Сериализатор для детального вывода перевала со всеми связанными данными"""
+    user = TouristSerializer()
+    coords = CoordsSerializer()
+    images = ImageSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = PerevalAdded
+        fields = '__all__'
+
+
+class PerevalAddedUpdateSerializer(serializers.ModelSerializer):
+    """Сериализатор для обновления перевала (без возможности менять пользователя)"""
+    coords = CoordsSerializer()
+    images = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Image.objects.all(),
+        required=False
+    )
+
+    class Meta:
+        model = PerevalAdded
+        fields = (
+            'beautyTitle', 'title', 'other_titles', 'connect',
+            'add_time', 'coords', 'winter_level', 'summer_level',
+            'autumn_level', 'spring_level', 'images'
+        )
+
+    def update(self, instance, validated_data):
+        # Обновление координат
+        coords_data = validated_data.pop('coords', None)
+        if coords_data:
+            coords = instance.coords
+            for attr, value in coords_data.items():
+                setattr(coords, attr, value)
+            coords.save()
+
+        # Обновление изображений (замена списка)
+        images_ids = validated_data.pop('images', None)
+        if images_ids is not None:
+            # Удаляем старые связи
+            PerevalImage.objects.filter(pereval=instance).delete()
+            # Создаём новые
+            for img_id in images_ids:
+                PerevalImage.objects.create(pereval=instance, image_id=img_id)
+
+        # Обновление остальных полей перевала
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        return instance
